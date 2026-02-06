@@ -40,6 +40,27 @@ export const resumeData = {
     ] as Skill[],
 
     projects: [
+
+        {
+            id: "expense-trackify",
+            title: "AI Expense Trackify",
+            subtitle: "SaaS Financial Platform",
+            description:
+                "An AI-powered financial tracker allowing users to log expenses via voice and supports OCR for bills and Pdf and query data using natural language.",
+            techStack: ["React.js", "Django", "PostgreSQL", "RAG Pipeline", "OCR"],
+            features: [
+                "Voice-First AI: Log transactions effortlessly using voice commands.",
+                "OCR Integration: Extract data from bills and PDFs automatically.",
+                "Chat with Data: Query 'How much did I spend on food?' via RAG pipeline.",
+                "SaaS Architecture: Secure authentication and scalable database design.",
+            ],
+            futureEnhancements: [
+                "Predictive Analytics for budgeting forecasts.",
+                "Multi-Currency Support for global usage.",
+                "Unified Banking Integration (UPI/Google Pay) for auto-imports.",
+            ],
+            github: "https://github.com/naanu1/ai_expense_backend",
+        },
         {
             id: "contextflow",
             title: "ContextFlow RAG",
@@ -53,26 +74,6 @@ export const resumeData = {
                 "Agentic Planning: Decomposes complex queries into sub-tasks automatically.",
             ],
             github: "https://github.com/naanu1/contextflow-rag", // Update if you have a specific link
-        },
-        {
-            id: "expense-trackify",
-            title: "AI Expense Trackify",
-            subtitle: "SaaS Financial Platform",
-            description:
-                "An AI-powered financial tracker allowing users to log expenses via voice and query data using natural language.",
-            techStack: ["React.js", "Django", "PostgreSQL", "RAG Pipeline", "OCR"],
-            features: [
-                "Voice-First AI: Log transactions effortlessly using voice commands.",
-                "Chat with Data: Query 'How much did I spend on food?' via RAG pipeline.",
-                "SaaS Architecture: Secure authentication and scalable database design.",
-            ],
-            futureEnhancements: [
-                "Predictive Analytics for budgeting forecasts.",
-                "Multi-Currency Support for global usage.",
-                "Unified Banking Integration (UPI/Google Pay) for auto-imports.",
-            ],
-            link: "https://expense-trackifyy.netlify.app/",
-            github: "https://github.com/naanu1/ai_expense_backend",
         },
         {
             id: "bhojanalaya",
@@ -90,20 +91,6 @@ export const resumeData = {
                 "Real-time Kitchen Order Tracking (KOT) system.",
             ],
             link: "https://bhojanalayaa.netlify.app/",
-        },
-        {
-            id: "insider-threat",
-            title: "Insider Threat Detection",
-            subtitle: "Deep Learning Security System",
-            description:
-                "A security system utilizing Deep Learning (GRU, ANN) to detect malicious employee behavior patterns.",
-            techStack: ["Deep Learning (GRU/ANN)", "Flask", "Python", "Honeypots"],
-            features: [
-                "Behavioral Analysis: Detects anomalies in user actions.",
-                "Honeypot Integration: Misleads attackers while logging their data.",
-            ],
-            github:
-                "https://github.com/naanu1/detection-of-illegal-activity-of-an-employee-in-an-organization",
         },
         {
             id: "mini-projects",
@@ -138,8 +125,8 @@ export const resumeData = {
                 "Architected a 100% serverless platform validating startups for investors.",
             achievements: [
                 "Architected a Serverless AI SaaS Platform that automates startup due diligence, validating funds and companies for investors with high precision.",
-                "Engineered a systematic Autonomous Intelligence Pipeline using multi-Lambda functions orchestrated by AWS Step Functions to perform high-level web research, filter duplicates, and extract data from heterogeneous pitch decks (PDFs/Docs).",
-                "Built a Generative Analysis Engine by integrating AWS Bedrock models secured by AWS Guardrails and Gemini to synthesize extracted data into detailed Investment Memos, Executive Summaries, and Clarification Questions.",
+                "Built a AI Analysis Engine by integrating AWS Bedrock models secured by AWS Guardrails and Gemini to synthesize extracted data into detailed Investment Memos, Executive Summaries, and Clarification Questions.",
+                "Engineered a systematic AI Autonomous Intelligence Pipeline using multi-Lambda functions orchestrated by AWS Step Functions to perform high-level web research, filter duplicates, and extract data from heterogeneous pitch decks (PDFs/Docs).",
                 "Designed an Event-Driven Architecture leveraging API Gateway and SQS for asynchronous document processing and DynamoDB for state management, enabling the system to handle complex multi-document analysis at scale.",
             ],
         },
@@ -149,7 +136,7 @@ export const resumeData = {
             location: "Bengaluru, India",
             role: "Full Stack AI Developer",
             period: "Dec 2024 – Apr 2025",
-            description: "Delivered multiple MVP solutions for vision and content.",
+            description: "Delivered multiple MVP solutions for vision and content services to clients.",
             achievements: [
                 "Developed a Real-Time PPE Monitoring System using Computer Vision to analyze live CCTV feeds, detecting safety violations (missing helmets/vests) and triggering instant email alerts to site managers.",
                 "Built a Traffic Management AI MVP using pre-trained ML models to detect accidents and parking violations, integrating emergency alerting and analytical dashboards for safety monitoring.",
