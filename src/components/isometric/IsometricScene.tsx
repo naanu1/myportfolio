@@ -9,25 +9,29 @@ interface IsometricSceneProps {
 }
 
 export const IsometricScene: React.FC<IsometricSceneProps> = ({ children }) => {
-    const { activeZone } = usePortfolioStore();
-    const [scale, setScale] = useState(1.3); // Increased base scale for IMPACT
+    const { activeZone, setIsMobile } = usePortfolioStore();
+    const [scale, setScale] = useState(1.3);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-    // Handle Responsive Scaling
+    // Handle Responsive Scaling + Mobile Detection
     useEffect(() => {
         const handleResize = () => {
-            // Logic: Fill the screen aggressively
-            const widthRatio = window.innerWidth / 1200; // Lower denominator = bigger items
+            const width = window.innerWidth;
+            const widthRatio = width / 1200;
             const heightRatio = window.innerHeight / 900;
 
             let newScale = Math.min(widthRatio, heightRatio);
 
-            // On mobile, zoom drastically to fill screen
-            if (window.innerWidth < 768) {
+            // Responsive Logic
+            if (width < 768) {
                 newScale = newScale * 1.5;
+                setIsMobile(true); // DETECT MOBILE
+            } else if (width < 1024) {
+                setIsMobile(true); // Tablets also get touch labels
+                newScale = newScale * 1.3;
             } else {
-                // Desktop: Boost size
                 newScale = Math.min(newScale * 1.3, 1.8);
+                setIsMobile(false);
             }
 
             setScale(newScale);
@@ -37,7 +41,7 @@ export const IsometricScene: React.FC<IsometricSceneProps> = ({ children }) => {
         window.addEventListener('resize', handleResize);
 
         const handleMouseMove = (e: MouseEvent) => {
-            const x = (e.clientX / window.innerWidth - 0.5) * 8; // Increased parallax
+            const x = (e.clientX / window.innerWidth - 0.5) * 8;
             const y = (e.clientY / window.innerHeight - 0.5) * 8;
             setMousePosition({ x, y });
         };
@@ -51,12 +55,12 @@ export const IsometricScene: React.FC<IsometricSceneProps> = ({ children }) => {
 
     // Standard Frontal View (Straight)
     const defaultView = {
-        scale: scale, // Reduced scale slightly
-        rotateX: 15, // Slightly less tilt for "Front-on" power feel
+        scale: scale,
+        rotateX: 15,
         rotateY: 0,
         rotateZ: 0,
         x: 0,
-        y: 80, // PERMANENT FIX: Shifted down 100px so top doesn't clip
+        y: 80,
     };
 
     // Zoomed Views 
@@ -87,14 +91,14 @@ export const IsometricScene: React.FC<IsometricSceneProps> = ({ children }) => {
                 height: '100vh',
                 overflow: 'hidden',
                 perspective: '2000px',
-                background: '#050210', // Deep Midnight Blue/Indigo
+                background: '#050210',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                position: 'relative' // For absolute children
+                position: 'relative'
             }}
         >
-            {/* 1. Global Gradient - Midnight Atmosphere */}
+            {/* 1. Global Gradient */}
             <div
                 style={{
                     position: 'absolute',
@@ -104,7 +108,7 @@ export const IsometricScene: React.FC<IsometricSceneProps> = ({ children }) => {
                 }}
             />
 
-            {/* 2. Abstract Background Elements (Floating Blobs) to fill space */}
+            {/* 2. Abstract Background Elements */}
             <motion.div
                 animate={{
                     x: mousePosition.x * -2,
@@ -144,7 +148,7 @@ export const IsometricScene: React.FC<IsometricSceneProps> = ({ children }) => {
                 transition={{
                     duration: 1.2,
                     type: "spring",
-                    stiffness: 70, // Snappier
+                    stiffness: 70,
                     damping: 25
                 }}
                 style={{
@@ -153,7 +157,6 @@ export const IsometricScene: React.FC<IsometricSceneProps> = ({ children }) => {
                     height: '0px',
                     position: 'relative',
                     zIndex: 1,
-                    // Global "Bloom" effect can be simulated with drop-shadow filter on parent
                     filter: 'drop-shadow(0 0 30px rgba(0,0,0,0.5))'
                 }}
             >

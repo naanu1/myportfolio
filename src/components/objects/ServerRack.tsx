@@ -6,8 +6,9 @@ import { IsoCube } from '../isometric/IsoCube';
 import { usePortfolioStore } from '@/store/usePortfolioStore';
 
 export const ServerRack: React.FC = () => {
-    const { setActiveZone, setHoveredObject, hoveredObject } = usePortfolioStore();
+    const { setActiveZone, setHoveredObject, hoveredObject, isMobile } = usePortfolioStore();
     const isHovered = hoveredObject === 'skills';
+    const showLabel = isHovered || isMobile;
 
     return (
         <motion.div
@@ -18,8 +19,6 @@ export const ServerRack: React.FC = () => {
             whileHover={{ scale: 1.05 }}
             style={{ cursor: 'pointer', position: 'absolute' }}
         >
-            {/* Positioned at Back Left corner */}
-
             {/* Main Server Tower */}
             <IsoCube
                 x={-300}
@@ -35,7 +34,7 @@ export const ServerRack: React.FC = () => {
             {/* Front Panel Grid */}
             <IsoCube
                 x={-295}
-                y={-305} // Slightly popped out
+                y={-305}
                 z={20}
                 width={90}
                 height={260}
@@ -56,7 +55,7 @@ export const ServerRack: React.FC = () => {
                         borderRadius: '50%',
                         backgroundColor: '#00ff00',
                         boxShadow: '0 0 15px #00ff00',
-                        transform: 'translateZ(100px)', // Bring to front
+                        transform: 'translateZ(100px)',
                         zIndex: 20
                     }}
                     animate={{ opacity: [0.2, 1, 0.2] }}
@@ -69,7 +68,7 @@ export const ServerRack: React.FC = () => {
                 />
             ))}
 
-            {/* Connecting Cable to Center */}
+            {/* Connecting Cable */}
             <div style={{
                 position: 'absolute',
                 left: '-250px',
@@ -83,7 +82,7 @@ export const ServerRack: React.FC = () => {
             }} />
 
             {/* Floating Label */}
-            {isHovered && (
+            {showLabel && (
                 <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}

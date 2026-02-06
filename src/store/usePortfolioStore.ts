@@ -5,16 +5,20 @@ interface PortfolioState {
     activeZone: ZoneType;
     hoveredObject: string | null;
     isIntroComplete: boolean;
+    isMobile: boolean; // Added
     setActiveZone: (zone: ZoneType) => void;
     setHoveredObject: (id: string | null) => void;
     completeIntro: () => void;
+    setIsMobile: (val: boolean) => void; // Added
 }
 
 export const usePortfolioStore = create<PortfolioState>((set) => ({
     activeZone: null,
     hoveredObject: null,
     isIntroComplete: false,
+    isMobile: false, // Default
     setActiveZone: (zone) => set({ activeZone: zone }),
     setHoveredObject: (id) => set({ hoveredObject: id }),
     completeIntro: () => set({ isIntroComplete: true }),
+    setIsMobile: (val) => set({ isMobile: val }),
 }));

@@ -7,8 +7,9 @@ import { usePortfolioStore } from '@/store/usePortfolioStore';
 import { resumeData } from '@/lib/resumeData';
 
 export const MainMonitor: React.FC = () => {
-    const { setActiveZone, setHoveredObject, hoveredObject } = usePortfolioStore();
+    const { setActiveZone, setHoveredObject, hoveredObject, isMobile } = usePortfolioStore();
     const isHovered = hoveredObject === 'about';
+    const showLabel = isHovered || isMobile;
 
     return (
         <motion.div
@@ -143,7 +144,7 @@ export const MainMonitor: React.FC = () => {
             }} />
 
             {/* Floating Label */}
-            {isHovered && (
+            {showLabel && (
                 <motion.div
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
