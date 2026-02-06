@@ -27,7 +27,9 @@ export const metadata: Metadata = {
     siteName: "Harshith M | Portfolio",
   },
   icons: {
-    icon: '/favicon.ico',
+    icon: '/icon.svg',
+    shortcut: '/icon.svg',
+    apple: '/icon.svg',
   }
 };
 
