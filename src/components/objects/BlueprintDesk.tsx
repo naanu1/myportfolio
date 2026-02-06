@@ -6,8 +6,9 @@ import { IsoCube } from '../isometric/IsoCube';
 import { usePortfolioStore } from '@/store/usePortfolioStore';
 
 export const BlueprintDesk: React.FC = () => {
-    const { setActiveZone, setHoveredObject, hoveredObject } = usePortfolioStore();
+    const { setActiveZone, setHoveredObject, hoveredObject, isMobile } = usePortfolioStore();
     const isHovered = hoveredObject === 'experience';
+    const showLabel = isHovered || isMobile;
 
     return (
         <motion.div
@@ -74,7 +75,7 @@ export const BlueprintDesk: React.FC = () => {
             }} />
 
             {/* Floating Label */}
-            {isHovered && (
+            {showLabel && (
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}

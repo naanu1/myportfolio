@@ -1,34 +1,36 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, Loader2, CheckCircle, AlertTriangle } from 'lucide-react';
 import { usePortfolioStore } from '@/store/usePortfolioStore';
-import emailjs from '@emailjs/browser';
 import { resumeData } from '@/lib/resumeData';
 
 export const ContactModal: React.FC = () => {
     const { setActiveZone } = usePortfolioStore();
-    const form = useRef<HTMLFormElement>(null);
     const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+    const [formData, setFormData] = useState({ user_name: '', user_email: '', message: '' });
 
-    const sendEmail = (e: React.FormEvent) => {
+    const sendEmail = async (e: React.FormEvent) => {
         e.preventDefault();
         setStatus('sending');
 
-        emailjs.sendForm(
-            process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
-            process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
-            form.current!,
-            process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
-        )
-            .then(() => {
-                setStatus('success');
-                form.current?.reset();
-                setTimeout(() => setStatus('idle'), 5000);
-            }, () => {
-                setStatus('error');
+        try {
+            const res = await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
             });
+
+            if (!res.ok) throw new Error('Failed');
+
+            setStatus('success');
+            setFormData({ user_name: '', user_email: '', message: '' });
+            setTimeout(() => setStatus('idle'), 5000);
+        } catch (error) {
+            console.error(error);
+            setStatus('error');
+        }
     };
 
     return (
@@ -57,7 +59,6 @@ export const ContactModal: React.FC = () => {
                 </div>
 
                 <div className="modal-body">
-                    {/* Status Feedback */}
                     <AnimatePresence>
                         {status === 'success' && (
                             <motion.div
@@ -83,70 +84,42 @@ export const ContactModal: React.FC = () => {
                         )}
                     </AnimatePresence>
 
-                    <form className="contact-form" ref={form} onSubmit={sendEmail} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                    <form className="contact-form" onSubmit={sendEmail} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
 
-                        {/* Name Input */}
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                             <label htmlFor="user_name" style={{ fontSize: '12px', color: '#888', textTransform: 'uppercase', letterSpacing: '1px' }}>Name</label>
                             <input
-                                type="text" id="user_name" name="user_name" required placeholder="Name / Callsign"
-                                style={{
-                                    background: '#111',
-                                    border: '1px solid #333',
-                                    padding: '12px',
-                                    color: '#fff',
-                                    borderRadius: '4px',
-                                    outline: 'none',
-                                    fontFamily: 'monospace'
-                                }}
+                                type="text" id="user_name" required placeholder="Name / Callsign"
+                                value={formData.user_name}
+                                onChange={(e) => setFormData({ ...formData, user_name: e.target.value })}
+                                style={{ background: '#111', border: '1px solid #333', padding: '12px', color: '#fff', borderRadius: '4px', outline: 'none', fontFamily: 'monospace' }}
                                 onFocus={(e) => e.target.style.borderColor = '#ff0055'}
                                 onBlur={(e) => e.target.style.borderColor = '#333'}
                             />
                         </div>
 
-                        {/* Email Input */}
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                             <label htmlFor="user_email" style={{ fontSize: '12px', color: '#888', textTransform: 'uppercase', letterSpacing: '1px' }}>Email</label>
                             <input
-                                type="email" id="user_email" name="user_email" required placeholder="email@sector.net"
-                                style={{
-                                    background: '#111',
-                                    border: '1px solid #333',
-                                    padding: '12px',
-                                    color: '#fff',
-                                    borderRadius: '4px',
-                                    outline: 'none',
-                                    fontFamily: 'monospace'
-                                }}
+                                type="email" id="user_email" required placeholder="email@sector.net"
+                                value={formData.user_email}
+                                onChange={(e) => setFormData({ ...formData, user_email: e.target.value })}
+                                style={{ background: '#111', border: '1px solid #333', padding: '12px', color: '#fff', borderRadius: '4px', outline: 'none', fontFamily: 'monospace' }}
                                 onFocus={(e) => e.target.style.borderColor = '#ff0055'}
                                 onBlur={(e) => e.target.style.borderColor = '#333'}
                             />
                         </div>
 
-                        {/* Message Input */}
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                             <label htmlFor="message" style={{ fontSize: '12px', color: '#888', textTransform: 'uppercase', letterSpacing: '1px' }}>Message</label>
                             <textarea
-                                id="message" name="message" rows={4} required placeholder="Enter transmission..."
-                                style={{
-                                    background: '#111',
-                                    border: '1px solid #333',
-                                    padding: '12px',
-                                    color: '#fff',
-                                    borderRadius: '4px',
-                                    outline: 'none',
-                                    fontFamily: 'monospace',
-                                    resize: 'none'
-                                }}
+                                id="message" rows={4} required placeholder="Enter transmission..."
+                                value={formData.message}
+                                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                                style={{ background: '#111', border: '1px solid #333', padding: '12px', color: '#fff', borderRadius: '4px', outline: 'none', fontFamily: 'monospace', resize: 'none' }}
                                 onFocus={(e) => e.target.style.borderColor = '#ff0055'}
                                 onBlur={(e) => e.target.style.borderColor = '#333'}
                             />
-                        </div>
-
-                        {/* Direct Contact Info Small */}
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', color: '#555', marginTop: '5px' }}>
-                            <span>DIRECT: {resumeData.personal.email}</span>
-                            <span>LOC: {resumeData.personal.location}</span>
                         </div>
 
                         <button
@@ -155,18 +128,9 @@ export const ContactModal: React.FC = () => {
                             style={{
                                 marginTop: '10px',
                                 background: status === 'success' ? '#00cc00' : '#ff0055',
-                                color: '#fff',
-                                border: 'none',
-                                padding: '12px',
-                                borderRadius: '4px',
-                                cursor: 'pointer',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                gap: '8px',
-                                fontWeight: 'bold',
-                                opacity: status === 'sending' ? 0.7 : 1,
-                                transition: 'all 0.3s'
+                                color: '#fff', border: 'none', padding: '12px', borderRadius: '4px', cursor: 'pointer',
+                                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontWeight: 'bold',
+                                opacity: status === 'sending' ? 0.7 : 1, transition: 'all 0.3s'
                             }}
                         >
                             {status === 'sending' ? <Loader2 className="spin" size={18} /> : (status === 'success' ? <CheckCircle size={18} /> : <Send size={18} />)}
