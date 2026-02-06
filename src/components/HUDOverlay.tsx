@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { resumeData } from '@/lib/resumeData';
-// We need to ensure globals.css has the media query for .hud-stats-right
+import { BrainCircuit } from 'lucide-react';
 
 export const HUDOverlay: React.FC = () => {
     const [time, setTime] = useState('');
@@ -16,7 +16,7 @@ export const HUDOverlay: React.FC = () => {
         const handleResize = () => {
             setIsMobile(window.innerWidth < 768);
         };
-        handleResize();
+        handleResize(); // Init
         window.addEventListener('resize', handleResize);
 
         return () => {
@@ -28,19 +28,28 @@ export const HUDOverlay: React.FC = () => {
     return (
         <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 50, padding: '30px' }}>
 
-            {/* Top Left: Identity Block */}
-            <div style={{ position: 'absolute', top: '30px', left: '30px' }}>
+            {/* Top Left: Identity Block - UPDATED WITH ICON */}
+            <div style={{ position: 'absolute', top: '30px', left: '30px', display: 'flex', alignItems: 'center', gap: '15px' }}>
+                {/* Tech Icon instead of Border */}
                 <div style={{
-                    borderLeft: '4px solid #00f0ff',
-                    paddingLeft: '15px',
+                    background: 'rgba(0, 240, 255, 0.1)',
+                    padding: '10px',
+                    borderRadius: '8px',
+                    border: '1px solid #00f0ff',
+                    boxShadow: '0 0 15px rgba(0, 240, 255, 0.3)'
+                }}>
+                    <BrainCircuit size={32} color="#00f0ff" />
+                </div>
+
+                <div style={{
                     fontFamily: 'monospace',
                     color: '#00f0ff',
                     textShadow: '0 0 10px #00f0ff'
                 }}>
-                    <div style={{ fontSize: '24px', fontWeight: 'bold', letterSpacing: '2px' }}>
+                    <div style={{ fontSize: isMobile ? '18px' : '24px', fontWeight: 'bold', letterSpacing: '2px' }}>
                         {resumeData.personal.name.toUpperCase()}
                     </div>
-                    <div style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', letterSpacing: '4px' }}>
+                    <div style={{ fontSize: isMobile ? '10px' : '14px', color: 'rgba(255,255,255,0.7)', letterSpacing: '4px' }}>
                         {resumeData.personal.title.toUpperCase()}
                     </div>
                 </div>
